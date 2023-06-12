@@ -117,6 +117,31 @@ class Pipe:
         return False
 
 
+class Base:
+    VEL = 50 # must be same as pipes
+    WIDTH = BASE_IMG.get_width()
+    IMG = BASE_IMG
+
+    def __init__(self, y):
+        self.y = y
+        # two images to cycle width each other
+        self.x1 = 0
+        self.x2 = self.WIDTH
+
+    def move(self):
+        self.x1 -= self.VEL
+        self.x2 -= self.VEL
+
+        if self.x1 + self.WIDTH < 0: # off the screen completely
+            self.x1 = self.x2 + self.WIDTH
+        if self.x2 + self.WIDTH < 0:
+            self.x2 = self.x1 + self.WIDTH
+
+    def draw(self, window):
+        window.blit(self.IMG, (self.x1, self.y))
+        window.blit(self.IMG, (self.x2, self.y))
+
+
 def draw_window(window, bird):
     window.blit(BACKGROUND_IMG, (0, 0))
     bird.draw(window)
